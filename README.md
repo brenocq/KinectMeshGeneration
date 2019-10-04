@@ -1,18 +1,12 @@
 # KinectMeshGeneration
-Object mesh generation with Kinect and OpenGL
+Object mesh generation with Kinect v1 and Processing p5.js
 
-## Building the lib
+## Installation
+1. Download libusb:
 ```
-cd lib
-git clone https://github.com/OpenKinect/libfreenect
-cd libfreenect
-mkdir build
-cd build
-cmake -L .. # -L lists all the project options
-make
+$ sudo apt-get install libusb-1.0-0 libusb-1.0-0-dev
 ```
 
-If an error occurs with the `make` command, add the following line to `lib/libfreenect/CMakeLists.txt` (I added it on line 41):
-```
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -std=c++11")
-```
+2. Install Processing: https://processing.org/download/
+
+3. Execute Processing and go to `Sketch -> Import Library... -> Add Library...`. Search for `Open Kinect for Processing 1.0` and install it.
