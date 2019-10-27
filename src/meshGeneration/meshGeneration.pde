@@ -13,6 +13,7 @@ float a = 0;
 // We'll use a lookup table so that we don't have to repeat the math over and over
 float[] depthLookUp = new float[2048];
 Vector<PVector> points = new Vector<PVector>();
+Vector<PVector> lastPoints = new Vector<PVector>();
 
 void setup() {
   // Rendering in P3D
@@ -24,60 +25,19 @@ void setup() {
   for (int i = 0; i < depthLookUp.length; i++) {
     depthLookUp[i] = rawDepthToMeters(i);
   }
+  initiatePopulation();
 }
 
 void draw() {
-  float factor = 400;
-  float meanZ=0, meanX=0, meanY=0;
-
    updatePoints();
    
-   for(int i=0; i<points.size(); i++){
-     meanZ+=points.elementAt(i).z;
-     meanX+=points.elementAt(i).x;
-     meanY+=points.elementAt(i).y;
-   }
-   meanX/=points.size();
-   meanY/=points.size();
-   meanZ/=points.size();
-   
-  // Translate and rotate
-  translate(width/2, height/2, -20);
+  // Translate and rotate*/
+  translate(width/2-sin(a)*100, height/2, 300-120*cos(a));
   rotateY(a);
   background(0);
   // Print points
-  for(int i=0; i<points.size(); i++){
-    PVector v = points.elementAt(i);
-    
-    
-    stroke(255);
-    pushMatrix();
-    translate(v.x*factor, v.y*factor, factor-v.z*factor - (factor-meanZ*factor));
-    point(0, 0);
-    popMatrix();
-  }
-
+  showPoints(points,1,1,1);
+  showIndividual(points, genes[0], 0, 1, 0);
   // Rotate
   a += 0.01f;
-}
-
-void updatePoints(){
-    points.clear();
-    // Get the raw depth as array of integers
-    int[] depth = kinect.getRawDepth();
-    // We're just going to calculate and draw every 4th pixel (equivalent of 160x120)
-    int skip = 4;
-    for (int x = 0; x < kinect.width; x += skip) {
-    for (int y = 0; y < kinect.height; y += skip) {
-      int offset = x + y*kinect.width;
-
-      // Convert kinect data to world xyz coordinate
-      int rawDepth = depth[offset];
-      PVector v = depthToWorld(x, y, rawDepth);
-
-      if(v.z<1.5 && v.z>0.1){
-        points.add(v);
-      }
-    }
-  }
 }
