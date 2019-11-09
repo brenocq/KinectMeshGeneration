@@ -1,5 +1,5 @@
 void showPoints(Vector<PVector> vec, float r, float g, float b){
-  float factor = 200;
+  float factor = 100;
   for(int i=0; i<vec.size(); i++){
     PVector v = vec.elementAt(i);
     
@@ -12,7 +12,7 @@ void showPoints(Vector<PVector> vec, float r, float g, float b){
 }
 
 void showIndividual(Vector<PVector> points, float[] gene, float r, float g, float b){
-  float factor = 200;
+  float factor = 100;
   for(int i=0; i<points.size(); i++){
     PVector v = points.elementAt(i);
     stroke(r*255, g*255, b*255);
@@ -54,7 +54,7 @@ void updatePoints(){
   // Get the raw depth as array of integers
   int[] depth = kinect.getRawDepth();
   // We're just going to calculate and draw every 4th pixel (equivalent of 160x120)
-  int skip = 7;
+  int skip = 3;
   for (int x = 0; x < kinect.width; x += skip) {
     for (int y = 0; y < kinect.height; y += skip) {
       int offset = x + y*kinect.width;
@@ -63,7 +63,7 @@ void updatePoints(){
       int rawDepth = depth[offset];
       PVector v = depthToWorld(x, y, rawDepth);
 
-      if(v.z<1.5 && v.z>0.1){
+      if(v.z<3 && v.z>0.1){
         points.add(v);
       }
     }
@@ -77,7 +77,7 @@ void updatePoints(){
   offsetZ=offsetZ/points.size();
   
   for(int i=0;i<points.size();i++){
-    points.elementAt(i).z = points.elementAt(i).z+offsetZ;
+    points.elementAt(i).z = points.elementAt(i).z+offsetZ*0.4;
   }
 }
 
@@ -89,7 +89,7 @@ void cleanPoints(){
         
         float dist = sqrt((u.x-v.x)*(u.x-v.x) + (u.y-v.y)*(u.y-v.y) + (u.z-v.z)*(u.z-v.z));
         
-        if(dist<0.005){
+        if(dist<0.002){
           allPoints.remove(j);
         }
     }

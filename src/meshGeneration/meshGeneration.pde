@@ -25,6 +25,7 @@ void setup() {
   for (int i = 0; i < depthLookUp.length; i++) {
     depthLookUp[i] = rawDepthToMeters(i);
   }
+  initiatePopulation();
   updatePoints();
 }
 
@@ -50,7 +51,7 @@ void draw() {
   // Red point center
   stroke(255, 0, 0);
   pushMatrix();
-  point(0, 0, 0);
+  point(0, 0, 0);//
   popMatrix();
   
   // Show all individuals
@@ -61,7 +62,7 @@ void draw() {
     showIndividual(points, genes[i], r, g, b);
   }*/
   
-  if(currScanNum<numberScanners && a==0){
+  /*if(currScanNum<numberScanners && a==0){
     // Print best individual
     
     //initiatePopulation();
@@ -69,14 +70,16 @@ void draw() {
     while(currGeneration<=maxGeneration){
       processPopulation();
       crossing();
+      
+      currGeneration++;
     }
     cleanPoints();
-          
+    System.out.printf("Size points vector: %d\n",allPoints.size());
     currGeneration = 0;
     currScanNum++;
-  }
+  }*/
   // Rotate
-  a += 0.01f;
+  //a += 0.01f;
   if(a > 3.14*2){
     a=0;
   }

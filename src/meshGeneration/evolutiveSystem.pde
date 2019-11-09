@@ -1,8 +1,8 @@
 import java.util.*;
 
 int sizePopulation = 50;
-int maxGeneration = 50;
-float dispersion = 5;// Define dispersion of first individuals
+int maxGeneration = 60;
+float dispersion = 0.01;// Define dispersion of first individuals
 
 int currGeneration = 0;
 int bestIndPop = 0;
@@ -20,7 +20,7 @@ void initiatePopulation() {
       genes[i][j] = ((float)Math.random()*1-0.5f)*dispersion;// From -0.5 to 0.5
     }
     for (int j=3; j<6; j++) {
-      genes[i][j] = (float)Math.random()*2*3.14f;// From 0 to 2pi
+      genes[i][j] = (float)Math.random()*2*3.14f*dispersion;// From 0 to 2pi
     }
   }
   /*System.out.printf("Population %d:\n", currGeneration);
@@ -32,7 +32,12 @@ void initiatePopulation() {
 
 void processPopulation() {
   //System.out.printf("Processing generation %d...\n", currGeneration);
+  System.out.printf("[");
   for (int i=0; i<sizePopulation; i++) {
+    if(i%5==0)
+      System.out.printf("-");
+    
+    
     fitness[i]=0;
     
     // For each current point to add...
@@ -79,17 +84,22 @@ void processPopulation() {
         minDistance = minimum(minDistance, distance);
       }
       fitness[i]+=minDistance;
+      /*if(minDistance<0.005){
+        fitness[i]+=1;
+      }else if(minDistance<0.01){
+        fitness[i]+=0.2;
+      }*/
     }
     //System.out.printf("\tFitness %d: %2.2f\n", i, fitness[i]);
   }
+  System.out.printf("]\n");
 }
 
 void crossing() {
   System.out.printf("Finishing generation %d... ", currGeneration);
-  currGeneration++;
   // Crossing parameters
-  float mutationRate = 0.2;
-  float crossingNeu  = 0.3;// Crossing neutralization
+  float mutationRate = 0.1;
+  float crossingNeu  = 0.5;// Crossing neutralization
   float mutationNeu  = 0.3;// Mutation neutralization
   
   
@@ -114,7 +124,7 @@ void crossing() {
         if(j<3)// Translation
           genes[i][j] = (mutationNeu)*genes[i][j] + (1-mutationNeu)*(genes[i][j] + ((float)Math.random()*1-0.5f)*dispersion);
         else// Rotation
-          genes[i][j] = (mutationNeu)*genes[i][j] + (1-mutationNeu)*(genes[i][j] + ((float)Math.random()*0.5-0.25f)*dispersion);
+          genes[i][j] = (mutationNeu)*genes[i][j] + (1-mutationNeu)*(genes[i][j] + ((float)Math.random()*6.28-3.14f)*dispersion);
       }
     }
   }
@@ -123,7 +133,7 @@ void crossing() {
   System.out.printf("Best individual: %2.2f\n",fitness[bestInd]);
   
   // Add processed points to the vector
-  if(currGeneration==maxGeneration || error<=5){
+  if(currGeneration==maxGeneration || error<=0.5){
     for (int i=0; i<points.size(); i++) {
       PVector v = points.elementAt(i);
       
