@@ -54,7 +54,7 @@ void updatePoints(){
   // Get the raw depth as array of integers
   int[] depth = kinect.getRawDepth();
   // We're just going to calculate and draw every 4th pixel (equivalent of 160x120)
-  int skip = 3;
+  int skip = 6;
   for (int x = 0; x < kinect.width; x += skip) {
     for (int y = 0; y < kinect.height; y += skip) {
       int offset = x + y*kinect.width;
@@ -63,7 +63,7 @@ void updatePoints(){
       int rawDepth = depth[offset];
       PVector v = depthToWorld(x, y, rawDepth);
 
-      if(v.z<3 && v.z>0.1){
+      if(v.z<1 && v.z>0.1){
         points.add(v);
       }
     }

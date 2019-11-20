@@ -1,0 +1,3 @@
+void triangulate(){
+  print(allPoint
+}

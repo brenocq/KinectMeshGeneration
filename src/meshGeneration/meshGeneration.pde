@@ -79,8 +79,12 @@ void draw() {
     currScanNum++;
   }*/
   // Rotate
-  //a += 0.01f;
+  a += 0.01f;
   if(a > 3.14*2){
     a=0;
   }
+}
+
+void mouseClicked() {
+  print("Clicked!\n");
 }
